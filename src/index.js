@@ -155,7 +155,7 @@ function renderGate() {
     subtitleEl.textContent = "Your playlist awaits.";
     buttonEl.textContent = "Start Playlist";
   } else {
-    titleEl.textContent = "Welcome back!";
+    titleEl.textContent = "The 'Dles";
     subtitleEl.textContent = "Pick up where you left off.";
     buttonEl.textContent = `Continue with ${currentGame.name}`;
   }
@@ -404,26 +404,75 @@ function initDevPanel() {
   const panel = document.getElementById('dev-panel');
   panel.classList.remove('hidden');
   
-  // Render per-game clear buttons
+  // Render per-game buttons (clear + edit)
   const container = document.getElementById('dev-game-buttons');
   container.innerHTML = PLAYLIST_CONFIG.map(game => `
     <div class="dev-game-btn">
       <span>${game.name}</span>
-      <button data-id="${game.id}">Clear</button>
+      <button data-id="${game.id}" data-action="edit" title="Edit">✏️</button>
+      <button data-id="${game.id}" data-action="clear" title="Clear">Clear</button>
     </div>
   `).join('');
   
-  // Per-game clear handlers
+  // Track which game is being edited
+  let editingGameId = null;
+  
+  // Per-game button handlers
   container.querySelectorAll('button').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const gameId = e.target.getAttribute('data-id');
+      const action = e.target.getAttribute('data-action');
       const today = getTodayString();
-      if (appState.results[today]) {
-        delete appState.results[today][gameId];
-        saveState();
-        renderApp();
+      
+      if (action === 'clear') {
+        if (appState.results[today]) {
+          delete appState.results[today][gameId];
+          saveState();
+          renderApp();
+        }
+      } else if (action === 'edit') {
+        editingGameId = gameId;
+        const game = PLAYLIST_CONFIG.find(g => g.id === gameId);
+        const currentResult = appState.results[today]?.[gameId] || '';
+        document.getElementById('dev-edit-title').textContent = `Edit: ${game.name}`;
+        document.getElementById('dev-edit-input').value = currentResult;
+        document.getElementById('dev-edit-modal').classList.remove('hidden');
       }
     });
+  });
+  
+  // Dev edit modal handlers
+  document.getElementById('btn-dev-edit-cancel').addEventListener('click', () => {
+    document.getElementById('dev-edit-modal').classList.add('hidden');
+    editingGameId = null;
+  });
+  
+  document.getElementById('btn-dev-edit-save').addEventListener('click', () => {
+    const today = getTodayString();
+    const newValue = document.getElementById('dev-edit-input').value.trim();
+    
+    if (!appState.results[today]) {
+      appState.results[today] = {};
+    }
+    
+    if (newValue) {
+      appState.results[today][editingGameId] = newValue;
+    } else {
+      delete appState.results[today][editingGameId];
+    }
+    
+    saveState();
+    document.getElementById('dev-edit-modal').classList.add('hidden');
+    editingGameId = null;
+    renderApp();
+  });
+  
+  // Reset to start (show gate screen)
+  document.getElementById('dev-reset-start').addEventListener('click', () => {
+    appState.currentIndex = 0;
+    hasUserGesture = false;
+    saveState();
+    renderApp();
   });
   
   // Skip to summary
@@ -456,3 +505,18 @@ function initDevPanel() {
 
 // Initialize dev panel after DOM ready
 document.addEventListener('DOMContentLoaded', initDevPanel);
+
+/**
+ * 7. SERVICE WORKER REGISTRATION
+ */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('SW registered:', registration.scope);
+      })
+      .catch((error) => {
+        console.log('SW registration failed:', error);
+      });
+  });
+}

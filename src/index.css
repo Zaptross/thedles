@@ -247,6 +247,7 @@ textarea {
   align-items: center;
   padding: 0.4rem 0;
   border-bottom: 1px solid var(--border-color);
+  gap: 0.25rem;
 }
 .dev-game-btn:last-child { border-bottom: none; }
 .dev-game-btn span { flex: 1; }
@@ -258,6 +259,10 @@ textarea {
   border-radius: 4px;
   cursor: pointer;
   color: var(--text-primary);
+}
+.dev-game-btn button[data-action="edit"] {
+  border: none;
+  padding: 0.2rem;
 }
 .dev-game-btn button:hover {
   background: var(--border-color);

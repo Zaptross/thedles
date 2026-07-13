@@ -7,7 +7,12 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#4CAF50" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#66bb6a" media="(prefers-color-scheme: dark)">
-  <title>Daily "Dle" Playlist</title>
+  <meta name="description" content="Zaptross' ideal daily puzzle rotation.">
+  <title>The 'Dles</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -70,7 +75,7 @@
   <div id="screen-summary" class="screen hidden">
     <div class="summary-container">
       <div class="summary-header">
-        <h1>Daily Summary</h1>
+        <h1>Today's Summary</h1>
         <button id="btn-theme-toggle" class="btn icon-btn" title="Toggle Theme">🌓</button>
       </div>
       
@@ -97,6 +102,19 @@
     </div>
   </div>
 
+  <!-- Dev Edit Modal -->
+  <div id="dev-edit-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h2 id="dev-edit-title">Edit Score</h2>
+      <p>Edit the result text:</p>
+      <textarea id="dev-edit-input" rows="8"></textarea>
+      <div class="modal-actions">
+        <button id="btn-dev-edit-cancel" class="btn secondary">Cancel</button>
+        <button id="btn-dev-edit-save" class="btn primary">Save</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer id="site-footer" class="site-footer">
     <span>Built with AI</span>
@@ -110,6 +128,7 @@
     <div class="dev-panel-header">🛠 Dev Tools</div>
     <div id="dev-game-buttons"></div>
     <hr>
+    <button id="dev-reset-start" class="btn secondary block">Reset to Start</button>
     <button id="dev-skip-summary" class="btn secondary block">Skip to Summary</button>
     <button id="dev-clear-today" class="btn secondary block">Clear All Today</button>
     <button id="dev-clear-history" class="btn secondary block danger">Clear All History</button>
