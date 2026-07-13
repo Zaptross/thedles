@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#4CAF50" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#66bb6a" media="(prefers-color-scheme: dark)">
+  <title>Daily "Dle" Playlist</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <!-- Screen 1: Empty Configuration State -->
+  <div id="screen-empty" class="screen hidden">
+    <div class="message-container">
+      <h1>Welcome to the Playlist</h1>
+      <p>Your configuration array is currently empty.</p>
+      <p>Please open <code>index.js</code> and populate the <code>PLAYLIST_CONFIG</code> array to get started.</p>
+    </div>
+  </div>
+
+  <!-- Screen 1b: Start/Resume Gate (for popup-blocked games) -->
+  <div id="screen-gate" class="screen hidden">
+    <div class="message-container">
+      <h1 id="gate-title">Ready for your daily puzzles?</h1>
+      <p id="gate-subtitle">Your playlist awaits.</p>
+      <button id="btn-gate-start" class="btn primary block">Start Playlist</button>
+      
+      <div id="gate-playlist" class="playlist-preview">
+        <h3>Today's Order</h3>
+        <ol id="gate-playlist-items"></ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Main Game Player -->
+  <div id="screen-game" class="screen hidden">
+    
+    <!-- Fallback view for games that break iframes -->
+    <div id="new-tab-fallback" class="hidden">
+      <div class="message-container">
+        <h2 id="new-tab-title">Playing in a new tab...</h2>
+        <p>This game is configured to block iframes and has been opened in a new tab.</p>
+        <p>Once you are finished, return here to submit your score or skip.</p>
+        <button id="btn-reopen-tab" class="btn secondary">Re-open Tab</button>
+      </div>
+    </div>
+
+    <!-- The standard iframe view -->
+    <iframe id="game-iframe" src="" frameborder="0" sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+
+    <!-- The Minimalist Control Bar -->
+    <div id="control-bar" class="control-bar">
+      <div class="bar-left">
+        <button id="btn-back" class="btn icon-btn" title="Go Back">◀</button>
+      </div>
+      <div class="bar-center">
+        <span id="game-title-display">Game Name</span>
+      </div>
+      <div class="bar-right">
+        <button id="btn-skip" class="btn secondary">Skip</button>
+        <button id="btn-submit" class="btn primary">Submit Score</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Summary Screen -->
+  <div id="screen-summary" class="screen hidden">
+    <div class="summary-container">
+      <div class="summary-header">
+        <h1>Daily Summary</h1>
+        <button id="btn-theme-toggle" class="btn icon-btn" title="Toggle Theme">🌓</button>
+      </div>
+      
+      <div id="summary-list" class="summary-list">
+        <!-- Javascript will populate this list -->
+      </div>
+      
+      <div class="summary-actions">
+        <button id="btn-copy-all" class="btn primary block">Copy All Results</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Score Submission Modal -->
+  <div id="score-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <h2 id="modal-title">Submit Score</h2>
+      <p>Paste your shared result text below:</p>
+      <textarea id="score-input" rows="8" placeholder="Wordle 1000 4/6..."></textarea>
+      <div class="modal-actions">
+        <button id="btn-modal-cancel" class="btn secondary">Cancel</button>
+        <button id="btn-modal-save" class="btn primary">Save & Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer id="site-footer" class="site-footer">
+    <span>Built with AI</span>
+    <span class="separator">•</span>
+    <a href="https://github.com/zaptross/zapdles" target="_blank" rel="noopener">View Source</a>
+  </footer>
+
+
+  <!-- Dev Panel (only shown in development) -->
+  <div id="dev-panel" class="dev-panel hidden">
+    <div class="dev-panel-header">🛠 Dev Tools</div>
+    <div id="dev-game-buttons"></div>
+    <hr>
+    <button id="dev-skip-summary" class="btn secondary block">Skip to Summary</button>
+    <button id="dev-clear-today" class="btn secondary block">Clear All Today</button>
+    <button id="dev-clear-history" class="btn secondary block danger">Clear All History</button>
+  </div>
+
+  <script src="index.js"></script>
+</body>
+</html>
