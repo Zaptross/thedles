@@ -377,6 +377,11 @@ textarea {
   background: var(--brand-color);
   color: #fff;
 }
+.settings-game-item .game-meta.paid {
+  background: #ff9800;
+  color: #fff;
+  cursor: help;
+}
 .settings-game-item.disabled .game-name {
   color: var(--text-secondary);
   text-decoration: line-through;

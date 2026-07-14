@@ -32,6 +32,21 @@ const PLAYLIST_CONFIG = [
     barPosition: "top"
   },
   {
+    id: "crossword",
+    name: "NYT Crossword",
+    url: "https://www.nytimes.com/crosswords",
+    openInNewTab: true,
+    barPosition: "top",
+    paidSubscription: "Requires NYT Games subscription"
+  },
+  {
+    id: "regexle",
+    name: "Regexle",
+    url: "https://regexle.com/",
+    openInNewTab: false,
+    barPosition: "bottom"
+  },
+  {
     id: "strands",
     name: "Strands",
     url: "https://www.nytimes.com/games/strands",
@@ -534,6 +549,7 @@ function renderSettings() {
     const isNew = unseenIds.includes(game.id);
     const metaTags = [
       game.openInNewTab ? '<span class="game-meta">New Tab</span>' : '',
+      game.paidSubscription ? `<span class="game-meta paid" title="${game.paidSubscription}">Paid</span>` : '',
       isNew ? '<span class="game-meta new">NEW</span>' : ''
     ].filter(Boolean).join('');
     return `
