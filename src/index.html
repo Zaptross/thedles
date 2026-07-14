@@ -33,9 +33,19 @@
       <p id="gate-subtitle">Your playlist awaits.</p>
       <button id="btn-gate-start" class="btn primary block">Start Playlist</button>
       
+      <button id="btn-gate-settings" class="btn secondary block settings-btn">
+        <span class="settings-icon">⚙️</span> Settings
+        <span id="gate-settings-badge" class="badge hidden"></span>
+      </button>
+      
       <div id="gate-playlist" class="playlist-preview">
         <h3>Today's Order</h3>
         <ol id="gate-playlist-items"></ol>
+        <div id="subset-controls" class="subset-controls hidden">
+          <button id="btn-subset-minus" class="btn icon-btn">−</button>
+          <span id="subset-count">5 games</span>
+          <button id="btn-subset-plus" class="btn icon-btn">+</button>
+        </div>
       </div>
     </div>
   </div>
@@ -76,7 +86,6 @@
     <div class="summary-container">
       <div class="summary-header">
         <h1>Today's Summary</h1>
-        <button id="btn-theme-toggle" class="btn icon-btn" title="Toggle Theme">🌓</button>
       </div>
       
       <div id="summary-list" class="summary-list">
@@ -85,7 +94,68 @@
       
       <div class="summary-actions">
         <button id="btn-copy-all" class="btn primary block">Copy All Results</button>
+        <button id="btn-summary-settings" class="btn secondary block settings-btn">
+          <span class="settings-icon">⚙️</span> Settings
+          <span id="summary-settings-badge" class="badge hidden"></span>
+        </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Screen 4: Settings Screen -->
+  <div id="screen-settings" class="screen hidden">
+    <div class="settings-container">
+      <div class="settings-header">
+        <button id="btn-settings-back" class="btn icon-btn">←</button>
+        <h1>Settings</h1>
+        <div class="header-spacer"></div>
+      </div>
+      
+      <!-- Game List Section -->
+      <section class="settings-section">
+        <h2>Your Playlist</h2>
+        <p class="section-hint">Drag to reorder. Uncheck to disable.</p>
+        <div id="settings-game-list" class="settings-game-list">
+          <!-- JS will populate -->
+        </div>
+      </section>
+      
+      <!-- Randomization Section -->
+      <section class="settings-section">
+        <h2>Randomization</h2>
+        
+        <label class="settings-toggle">
+          <input type="checkbox" id="setting-randomize-order">
+          <span class="toggle-label">Shuffle order daily</span>
+        </label>
+        
+        <label class="settings-toggle">
+          <input type="checkbox" id="setting-random-subset">
+          <span class="toggle-label">Random subset mode</span>
+        </label>
+        
+        <div id="subset-size-control" class="settings-slider hidden">
+          <label for="setting-subset-size">Games per day:</label>
+          <input type="range" id="setting-subset-size" min="1" max="7" value="5">
+          <span id="subset-size-display">5</span>
+        </div>
+      </section>
+      
+      <!-- Appearance Section -->
+      <section class="settings-section">
+        <h2>Appearance</h2>
+        
+        <label class="settings-toggle">
+          <input type="checkbox" id="setting-dark-mode">
+          <span class="toggle-label">Dark mode</span>
+        </label>
+      </section>
+      
+      <!-- Actions Section -->
+      <section class="settings-section settings-actions">
+        <button id="btn-settings-save" class="btn primary block">Save & Close</button>
+        <button id="btn-reset-defaults" class="btn secondary block">Reset to Defaults</button>
+      </section>
     </div>
   </div>
 
@@ -94,7 +164,7 @@
     <div class="modal-content">
       <h2 id="modal-title">Submit Score</h2>
       <p>Paste your shared result text below:</p>
-      <textarea id="score-input" rows="8" placeholder="Wordle 1000 4/6..."></textarea>
+      <textarea id="score-input" rows="8" placeholder="Paste your result here..."></textarea>
       <div class="modal-actions">
         <button id="btn-modal-cancel" class="btn secondary">Cancel</button>
         <button id="btn-modal-save" class="btn primary">Save & Next</button>

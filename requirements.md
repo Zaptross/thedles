@@ -166,3 +166,99 @@ A development panel is available when running the application locally (hostname 
 * **Skip to Summary:** Immediately navigate to the Summary Screen regardless of progress.
 * **Clear All Today:** Reset all game results for today and return to game index 0.
 * **Clear All History:** Wipe all historical data from `localStorage` (with confirmation prompt).
+
+---
+
+### 8. Settings & Customization
+
+Users can customize their playlist through a dedicated settings interface.
+
+#### 8.1 Settings Access
+
+* **Gate Screen:** A settings button appears above the playlist preview.
+* **Summary Screen:** A settings button appears below the "Copy All Results" button.
+* **No Mid-Playlist Access:** Settings cannot be changed while actively playing through the playlist.
+
+#### 8.2 Settings UI
+
+* **Full-Page Layout:** Settings open as a dedicated full-page screen, not a modal or drawer.
+* **Theme Toggle:** The theme switcher (previously on summary only) moves to the settings page.
+* **Reset to Defaults:** A button to restore the original playlist configuration.
+
+#### 8.3 Game List Management
+
+* **Enable/Disable Toggles:** Each game has a checkbox to include or exclude it from the playlist.
+* **Drag-to-Reorder:** Users can reorder games via drag-and-drop; order is persisted to `localStorage`.
+* **Hidden When Disabled:** Disabled games do not appear in the playlist preview; numbering reflects only enabled games.
+* **Empty State Prevention:** Users cannot save settings with zero games enabled; the settings page forces them to enable at least one.
+* **Game Metadata:** Each game row displays metadata such as "Opens in new tab" indicator.
+
+#### 8.4 New Game Discovery
+
+* **Default State:** When new games are added to the master configuration, they default to **disabled** for returning users with existing preferences.
+* **New Game Indicator:** A dot/badge appears on the settings button when new (unseen) games are available.
+* **Seen Tracking:** The application stores a list of game IDs the user has seen in settings, clearing the badge once they open settings.
+
+#### 8.5 Removed Game Handling
+
+* If a game is removed from the master configuration, users who had it enabled receive a **one-time notice** informing them of the removal.
+
+---
+
+### 9. Randomization Modes
+
+Optional modes to vary the daily playlist experience.
+
+#### 9.1 Randomize Order Mode
+
+* **Toggle:** An optional setting to shuffle the order of enabled games.
+* **Timing:** Shuffle occurs on **first load each day** (not mid-session).
+* **Seed:** Uses a date-based seed (user's local date) for cross-device consistency—same date produces same order.
+
+#### 9.2 Random Subset Mode
+
+* **Toggle:** An optional setting to play a random subset of enabled games each day.
+* **Subset Size:** Configured via a slider with numeric display; minimum 1, maximum capped at enabled game count.
+* **Warning:** If subset size exceeds enabled games, warn the user to enable more games or reduce subset size.
+* **Seed:** Uses a date-based seed (user's local date) for cross-device consistency.
+* **Algorithm:** Shuffle all enabled games first, then pick the top N.
+
+#### 9.3 Random Subset Preview
+
+* **Picked Games:** Shown normally in the playlist preview.
+* **Non-Picked Games:** Shown greyed out below the picked games.
+* **Add Button (+):** Greyed-out games have a "+" button to add them to today's playlist (temporary, today only).
+* **Remove Button (-):** Picked games have a "-" button to remove them from today's playlist (temporary, today only).
+* **Button Visibility:** +/- buttons only appear when random subset mode is enabled; hidden when subset size equals enabled count.
+
+#### 9.4 Mid-Day Changes
+
+* **Adding Games:** Adding a greyed-out game via "+" persists only for today; does not change subset size setting.
+* **Disabling Picked Games:** If a user disables a picked game via settings, it is removed from today's picks and a replacement is auto-selected from the remaining enabled pool.
+* **Picks Preserved:** Today's picks (minus any disabled) are preserved if the user changes their enabled list mid-day.
+
+#### 9.5 Compatibility
+
+* Randomize Order and Random Subset modes can be enabled simultaneously.
+* When both are enabled: shuffle all enabled games, pick top N for subset, display in shuffled order.
+
+---
+
+### 10. Additional Games
+
+The following games are to be added to the master configuration. Iframe compatibility and bar position to be determined during implementation via interactive testing.
+
+| Game | URL | Notes |
+|------|-----|-------|
+| Strands | (NYT Strands URL) | TBD: iframe/newTab, barPosition |
+| Worldle | https://worldle.teuteuf.fr/ | TBD: iframe/newTab, barPosition |
+| Globle | https://globle-game.com/ | TBD: iframe/newTab, barPosition |
+
+---
+
+### 11. Bug Fixes
+
+#### 11.1 Modal Placeholder Text
+
+* The score submission modal placeholder currently shows "Wordle 1000 4/6..." regardless of the active game.
+* **Fix:** Either use a generic placeholder (e.g., "Paste your result here...") or dynamically set a per-game placeholder.
