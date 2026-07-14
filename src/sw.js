@@ -1,4 +1,4 @@
-const CACHE_NAME = 'dles-v2';
+const CACHE_NAME = 'dles-v3';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
