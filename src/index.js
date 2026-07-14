@@ -575,6 +575,7 @@ function attachDragHandlers() {
   let draggedItem = null;
   
   container.querySelectorAll('.settings-game-item').forEach(item => {
+    // Mouse drag events
     item.addEventListener('dragstart', (e) => {
       draggedItem = item;
       item.classList.add('dragging');
@@ -598,6 +599,43 @@ function attachDragHandlers() {
         }
       }
     });
+    
+    // Touch drag events (mobile)
+    const handle = item.querySelector('.drag-handle');
+    if (handle) {
+      handle.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        draggedItem = item;
+        item.classList.add('dragging');
+      }, { passive: false });
+      
+      handle.addEventListener('touchmove', (e) => {
+        e.preventDefault();
+        if (!draggedItem) return;
+        
+        const touch = e.touches[0];
+        const elemBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+        const targetItem = elemBelow?.closest('.settings-game-item');
+        
+        if (targetItem && targetItem !== draggedItem) {
+          const rect = targetItem.getBoundingClientRect();
+          const midY = rect.top + rect.height / 2;
+          if (touch.clientY < midY) {
+            container.insertBefore(draggedItem, targetItem);
+          } else {
+            container.insertBefore(draggedItem, targetItem.nextSibling);
+          }
+        }
+      }, { passive: false });
+      
+      handle.addEventListener('touchend', () => {
+        if (draggedItem) {
+          draggedItem.classList.remove('dragging');
+          draggedItem = null;
+          saveGameOrder();
+        }
+      });
+    }
   });
 }
 
