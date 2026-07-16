@@ -1,3 +1,6 @@
+// Build info - updated during deployment
+const COMMIT_HASH = '__COMMIT_HASH__';
+
 /** 
  * 1. CONFIGURATION
  * Populate this array to build your playlist.
@@ -420,6 +423,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initPreferences();
   checkRemovedGames();
   updateSettingsBadges();
+  
+  // Display commit hash in footer
+  const hashEl = document.getElementById('commit-hash');
+  if (hashEl && COMMIT_HASH && !COMMIT_HASH.startsWith('__')) {
+    hashEl.textContent = COMMIT_HASH;
+  } else if (hashEl) {
+    hashEl.parentElement.querySelector('.separator:nth-of-type(2)')?.remove();
+    hashEl.remove();
+  }
+  
   renderApp();
 });
 
@@ -1043,9 +1056,56 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js')
       .then((registration) => {
         console.log('SW registered:', registration.scope);
+        
+        // Check for updates
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available
+              showUpdateToast();
+            }
+          });
+        });
       })
       .catch((error) => {
         console.log('SW registration failed:', error);
       });
   });
+  
+  // Handle controller change (new SW activated)
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    window.location.reload();
+  });
 }
+
+function showUpdateToast() {
+  const toast = document.getElementById('update-toast');
+  if (toast) toast.classList.remove('hidden');
+}
+
+// Update toast refresh button
+document.getElementById('btn-update-refresh')?.addEventListener('click', () => {
+  if (navigator.serviceWorker.controller) {
+    navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+  } else {
+    window.location.reload();
+  }
+});
+
+// Force refresh button in settings
+document.getElementById('btn-force-refresh')?.addEventListener('click', async () => {
+  if ('serviceWorker' in navigator) {
+    const registrations = await navigator.serviceWorker.getRegistrations();
+    for (const registration of registrations) {
+      await registration.unregister();
+    }
+  }
+  if ('caches' in window) {
+    const cacheNames = await caches.keys();
+    for (const name of cacheNames) {
+      await caches.delete(name);
+    }
+  }
+  window.location.reload(true);
+});

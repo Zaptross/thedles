@@ -460,10 +460,43 @@ textarea {
   margin: 0 0.5rem;
   opacity: 0.5;
 }
+.site-footer .commit-hash {
+  font-family: monospace;
+  opacity: 0.7;
+}
 .site-footer a {
   color: var(--brand-color);
   text-decoration: none;
 }
 .site-footer a:hover {
   text-decoration: underline;
+}
+
+/* --- Update Toast --- */
+.update-toast {
+  position: fixed;
+  bottom: calc(2rem + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--brand-color);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 10000;
+  animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp {
+  from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+  to { transform: translateX(-50%) translateY(0); opacity: 1; }
+}
+.update-toast .btn.small {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  background: #fff;
+  color: var(--brand-color);
+  border: none;
 }

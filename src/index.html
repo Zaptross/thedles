@@ -155,6 +155,7 @@
       <section class="settings-section settings-actions">
         <button id="btn-settings-save" class="btn primary block">Save & Close</button>
         <button id="btn-reset-defaults" class="btn secondary block">Reset to Defaults</button>
+        <button id="btn-force-refresh" class="btn secondary block">Force Refresh App</button>
       </section>
     </div>
   </div>
@@ -189,8 +190,16 @@
   <footer id="site-footer" class="site-footer">
     <span>Built with AI</span>
     <span class="separator">•</span>
+    <span id="commit-hash" class="commit-hash"></span>
+    <span class="separator">•</span>
     <a href="https://github.com/zaptross/zapdles" target="_blank" rel="noopener">View Source</a>
   </footer>
+
+  <!-- Update Toast -->
+  <div id="update-toast" class="update-toast hidden">
+    <span>Update available</span>
+    <button id="btn-update-refresh" class="btn primary small">Refresh</button>
+  </div>
 
 
   <!-- Dev Panel (only shown in development) -->
